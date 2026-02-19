@@ -1,14 +1,11 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
 import { useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
-import App from "./App";
-import "./index.css";
 
-function SmoothApp() {
+export default function useLenis() {
   useEffect(() => {
     const lenis = new Lenis({
       smooth: true,
+      lerp: 0.08,
     });
 
     function raf(time) {
@@ -22,12 +19,4 @@ function SmoothApp() {
       lenis.destroy();
     };
   }, []);
-
-  return <App />;
 }
-
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <SmoothApp />
-  </React.StrictMode>
-);

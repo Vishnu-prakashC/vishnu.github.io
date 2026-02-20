@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
 import Layout from "./components/layout/Layout";
 import Hero from "./components/sections/Hero";
+import About from "./components/sections/About";
 
 function App() {
   useEffect(() => {
@@ -22,6 +23,7 @@ function App() {
   return (
     <Layout>
       <Hero />
+      <About />
     </Layout>
   );
 }

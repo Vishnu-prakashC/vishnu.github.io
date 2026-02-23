@@ -2,8 +2,8 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MagneticButton from "../ui/MagneticButton";
+import HeroScene from "../three/HeroScene";
 
-// ...existing code...
 export default function Hero() {
   const titleRef = useRef(null);
   const textRef = useRef(null);
@@ -25,8 +25,9 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="min-h-screen flex items-center justify-center text-center px-6 pt-20 pb-24">
-      <div className="max-w-3xl mx-auto">
+    <section className="relative h-screen flex items-center justify-center text-center px-6 pt-24 overflow-hidden">
+      <HeroScene />
+      <div className="relative z-10 max-w-4xl">
         <h1
           ref={titleRef}
           className="text-5xl sm:text-6xl md:text-7xl font-bold mb-8 opacity-0 leading-tight tracking-tight"
@@ -47,4 +48,3 @@ export default function Hero() {
     </section>
   );
 }
-// ...existing code...

@@ -1,22 +1,31 @@
-import { Canvas, useFrame } from "@react-three/fiber";
-import { MeshDistortMaterial, OrbitControls } from "@react-three/drei";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { MeshDistortMaterial } from "@react-three/drei";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { useRef } from "react";
 
 function AnimatedSphere() {
   const mesh = useRef();
+  const { camera } = useThree();
 
-  useFrame(() => {
+  useFrame((state) => {
     if (!mesh.current) return;
     mesh.current.rotation.y += 0.003;
     mesh.current.rotation.x += 0.001;
+
+    // subtle floating effect
+    mesh.current.position.y = Math.sin(state.clock.elapsedTime) * 0.2;
+
+    // scroll-based camera push
+    const scrollY = window.scrollY;
+    camera.position.z = 5 + scrollY * 0.002;
   });
 
   return (
     <mesh ref={mesh} scale={2}>
-      <sphereGeometry args={[1, 64, 64]} />
+      <icosahedronGeometry args={[1, 1]} />
       <MeshDistortMaterial
         color="#6C7BFF"
-        distort={0.3}
+        distort={0.4}
         speed={2}
         roughness={0}
       />
@@ -30,7 +39,9 @@ export default function FloatingSphere() {
       <ambientLight intensity={1.2} />
       <directionalLight position={[2, 2, 2]} />
       <AnimatedSphere />
-      <OrbitControls enableZoom={false} enablePan={false} />
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.2} intensity={0.8} />
+      </EffectComposer>
     </Canvas>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import AnimatedReveal from "../animations/AnimatedReveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,18 +37,19 @@ export default function Projects() {
       <h2 className="text-4xl font-bold mb-16">Projects</h2>
 
       <div className="grid md:grid-cols-3 gap-10">
-        {[1, 2, 3].map((item) => (
-          <div
-            key={item}
-            className="project-card bg-white/5 border border-white/10 p-8 rounded-xl opacity-0"
-          >
-            <h3 className="text-xl font-semibold mb-4">
-              Project {item}
-            </h3>
-            <p className="text-white/60">
-              Description of project and tech stack used.
-            </p>
-          </div>
+        {[1, 2, 3].map((item, index) => (
+          <AnimatedReveal key={item} delayIndex={index}>
+            <div
+              className="project-card bg-white/5 border border-white/10 p-8 rounded-xl opacity-0"
+            >
+              <h3 className="text-xl font-semibold mb-4">
+                Project {item}
+              </h3>
+              <p className="text-white/60">
+                Description of project and tech stack used.
+              </p>
+            </div>
+          </AnimatedReveal>
         ))}
       </div>
     </section>

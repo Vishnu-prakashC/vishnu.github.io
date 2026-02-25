@@ -1,33 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { useEffect } from "react";
-import Lenis from "@studio-freight/lenis";
 import App from "./App";
+import SmoothScrollProvider from "./providers/SmoothScrollProvider";
+import PageTransition from "./components/animations/PageTransition";
+import Background3DWrapper from "./providers/Background3DWrapper";
 import "./index.css";
-
-function SmoothApp() {
-  useEffect(() => {
-    const lenis = new Lenis({
-      smooth: true,
-    });
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
-
-  return <App />;
-}
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <SmoothApp />
+    <SmoothScrollProvider>
+      <PageTransition>
+        <Background3DWrapper>
+          <App />
+        </Background3DWrapper>
+      </PageTransition>
+    </SmoothScrollProvider>
   </React.StrictMode>
 );

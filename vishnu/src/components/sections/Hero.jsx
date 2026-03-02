@@ -24,9 +24,26 @@ export default function Hero() {
     );
   }, []);
 
+  useEffect(() => {
+    const handleMouse = (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+      gsap.to(".hero-content", {
+        x,
+        y,
+        duration: 1,
+        ease: "power3.out",
+      });
+    };
+
+    window.addEventListener("mousemove", handleMouse);
+    return () => window.removeEventListener("mousemove", handleMouse);
+  }, []);
+
   return (
     <section className="h-screen flex items-center px-10">
-      <div className="w-1/2">
+      <div className="hero-content w-1/2">
         <h1
           ref={titleRef}
           className="text-5xl sm:text-6xl md:text-7xl font-bold mb-8 opacity-0 leading-tight tracking-tight"

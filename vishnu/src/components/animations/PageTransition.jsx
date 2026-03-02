@@ -1,9 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { motionTransition } from "../../utils/motion";
 
 /**
  * Page-level fade transition wrapper.
  * Use around route content or main app content for fade in/out.
- * Duration 0.5s easeInOut; does not alter routing logic.
+ * GPU-friendly: opacity only, duration ≤ 400ms.
  */
 export default function PageTransition({ children }) {
   return (
@@ -12,7 +13,7 @@ export default function PageTransition({ children }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
+        transition={motionTransition.page}
       >
         {children}
       </motion.div>

@@ -1,73 +1,41 @@
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { memo } from "react";
+import { motion } from "framer-motion";
+import { scrollReveal, viewportOnce } from "../../utils/motion";
 
-gsap.registerPlugin(ScrollTrigger);
-
-export default function About() {
-  const sectionRef = useRef(null);
-  const headingRef = useRef(null);
-  const textRef = useRef(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        headingRef.current,
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power4.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        }
-      );
-
-      gsap.fromTo(
-        textRef.current,
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          delay: 0.2,
-          ease: "power4.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        }
-      );
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
+function About() {
   return (
-    <section
-      ref={sectionRef}
+    <motion.section
       id="about"
       className="min-h-screen flex items-center justify-center px-6"
+      initial="initial"
+      whileInView="visible"
+      viewport={viewportOnce}
+      variants={{
+        initial: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { staggerChildren: 0.1, delayChildren: 0.05 },
+        },
+      }}
     >
       <div className="max-w-3xl text-center">
-        <h2
-          ref={headingRef}
-          className="text-4xl md:text-5xl font-bold mb-6 opacity-0"
+        <motion.h2
+          className="text-4xl md:text-5xl font-bold mb-6"
+          variants={scrollReveal}
         >
           About Me
-        </h2>
-        <p
-          ref={textRef}
-          className="text-white/60 text-lg leading-relaxed opacity-0"
+        </motion.h2>
+        <motion.p
+          className="text-white/60 text-lg leading-relaxed"
+          variants={scrollReveal}
         >
           I am an engineering student passionate about building scalable web
-          applications, real-time systems, and immersive 3D experiences using
+          applications, real-time systems, and immersive experiences using
           modern frontend technologies.
-        </p>
+        </motion.p>
       </div>
-    </section>
+    </motion.section>
   );
 }
+
+export default memo(About);

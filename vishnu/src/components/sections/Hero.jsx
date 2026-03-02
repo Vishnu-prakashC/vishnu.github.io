@@ -1,70 +1,58 @@
-import { useEffect, useRef } from "react";
+import { memo, useRef } from "react";
+import { motion } from "framer-motion";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import MagneticButton from "../ui/MagneticButton";
-import FloatingSphere from "../three/FloatingSphere";
+import { heroTitle, heroSubtitle, motionTransition } from "../../utils/motion";
 
-export default function Hero() {
-  const titleRef = useRef(null);
-  const textRef = useRef(null);
+function Hero({ onTriggerWave, isWaveBusy }) {
+  const buttonRef = useRef(null);
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    const tl = gsap.timeline();
-
-    tl.fromTo(
-      titleRef.current,
-      { y: 80, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: "power4.out" }
-    ).fromTo(
-      textRef.current,
-      { y: 40, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: "power4.out" },
-      "-=0.6"
-    );
-  }, []);
-
-  useEffect(() => {
-    const handleMouse = (e) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 20;
-      const y = (e.clientY / window.innerHeight - 0.5) * 20;
-
-      gsap.to(".hero-content", {
-        x,
-        y,
-        duration: 1,
-        ease: "power3.out",
-      });
-    };
-
-    window.addEventListener("mousemove", handleMouse);
-    return () => window.removeEventListener("mousemove", handleMouse);
-  }, []);
+  const handleClick = () => {
+    if (isWaveBusy || !onTriggerWave) return;
+    gsap.to(buttonRef.current, { scale: 0.95, duration: 0.1 });
+    gsap.to(buttonRef.current, { scale: 1, duration: 0.15, delay: 0.05 });
+    onTriggerWave();
+  };
 
   return (
-    <section className="h-screen flex items-center px-10">
-      <div className="hero-content w-1/2">
-        <h1
-          ref={titleRef}
-          className="text-5xl sm:text-6xl md:text-7xl font-bold mb-8 opacity-0 leading-tight tracking-tight"
+    <section className="h-screen flex items-center px-6 sm:px-10">
+      <div className="hero-content w-full">
+        <motion.h1
+          className="text-5xl sm:text-6xl md:text-7xl font-bold mb-8 leading-tight tracking-tight"
+          variants={heroTitle}
+          initial="initial"
+          animate="animate"
         >
           Hi, I'm <span className="text-indigo-400">Vishnu</span>
-        </h1>
-        <p
-          ref={textRef}
-          className="text-white/60 text-lg md:text-xl max-w-xl leading-relaxed opacity-0"
+        </motion.h1>
+        <motion.p
+          className="text-white/60 text-lg md:text-xl max-w-xl leading-relaxed"
+          variants={heroSubtitle}
+          initial="initial"
+          animate="animate"
+          transition={motionTransition.medium}
         >
           Full Stack Developer building modern web experiences
-          with 3D, animations and interactive UI.
-        </p>
-        <div className="mt-12">
-          <MagneticButton>View Projects</MagneticButton>
-        </div>
-      </div>
-
-      <div className="w-1/2 h-[500px]">
-        <FloatingSphere />
+          with animations and interactive UI.
+        </motion.p>
+        <motion.div
+          className="mt-12"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.25 }}
+        >
+          <button
+            ref={buttonRef}
+            type="button"
+            onClick={handleClick}
+            disabled={isWaveBusy}
+            className="px-8 py-4 bg-[#6366F1] hover:bg-indigo-500 text-white rounded-full font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0e100f] disabled:opacity-70 disabled:cursor-not-allowed transition-colors hover-scale-on-hover"
+          >
+            View Projects
+          </button>
+        </motion.div>
       </div>
     </section>
   );
 }
+
+export default memo(Hero);

@@ -1,57 +1,76 @@
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import AnimatedReveal from "../animations/AnimatedReveal";
+import { memo, useMemo } from "react";
+import { motion } from "framer-motion";
+import { scrollReveal, hoverScaleSubtle, viewportOnce, motionTransition } from "../../utils/motion";
 
-gsap.registerPlugin(ScrollTrigger);
+const PROJECTS = [
+  { id: 1, title: "Project 1", description: "Description of project and tech stack used." },
+  { id: 2, title: "Project 2", description: "Description of project and tech stack used." },
+  { id: 3, title: "Project 3", description: "Description of project and tech stack used." },
+];
 
-export default function Projects() {
-  const sectionRef = useRef(null);
+const cardTransition = { duration: motionTransition.medium.duration, ease: motionTransition.medium.ease };
 
-  useEffect(() => {
-    const cards = gsap.utils.toArray(".project-card");
-
-    gsap.fromTo(
-      cards,
-      { y: 60, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        stagger: 0.2,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-        },
-      }
-    );
-  }, []);
-
+function ProjectCard({ item }) {
   return (
-    <section
-      ref={sectionRef}
-      id="projects"
-      className="min-h-screen px-10 py-20"
+    <motion.div
+      variants={hoverScaleSubtle}
+      initial="rest"
+      whileHover="hover"
+      whileTap="tap"
+      transition={cardTransition}
+      className="project-card bg-white/5 border border-white/10 p-8 rounded-xl hover:border-white/20 hover:bg-white/[0.07] transition-colors duration-200 hover-scale-on-hover"
     >
-      <h2 className="text-4xl font-bold mb-16">Projects</h2>
-
-      <div className="grid md:grid-cols-3 gap-10">
-        {[1, 2, 3].map((item, index) => (
-          <AnimatedReveal key={item} delayIndex={index}>
-            <div
-              className="project-card bg-white/5 border border-white/10 p-8 rounded-xl opacity-0"
-            >
-              <h3 className="text-xl font-semibold mb-4">
-                Project {item}
-              </h3>
-              <p className="text-white/60">
-                Description of project and tech stack used.
-              </p>
-            </div>
-          </AnimatedReveal>
-        ))}
-      </div>
-    </section>
+      <h3 className="text-xl font-semibold mb-4">{item.title}</h3>
+      <p className="text-white/60">{item.description}</p>
+    </motion.div>
   );
 }
+
+function Projects() {
+  const sectionVariants = useMemo(
+    () => ({
+      initial: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.1, delayChildren: 0.05 },
+      },
+    }),
+    []
+  );
+
+  const itemVariants = useMemo(
+    () => ({
+      initial: scrollReveal.initial,
+      visible: scrollReveal.visible,
+    }),
+    []
+  );
+
+  return (
+    <motion.section
+      id="projects"
+      className="min-h-screen px-6 sm:px-10 py-20"
+      initial="initial"
+      whileInView="visible"
+      viewport={viewportOnce}
+      variants={sectionVariants}
+    >
+      <motion.h2
+        className="text-4xl font-bold mb-16"
+        variants={itemVariants}
+      >
+        Projects
+      </motion.h2>
+
+      <div className="grid md:grid-cols-3 gap-8 sm:gap-10">
+        {PROJECTS.map((item) => (
+          <motion.div key={item.id} variants={itemVariants}>
+            <ProjectCard item={item} />
+          </motion.div>
+        ))}
+      </div>
+    </motion.section>
+  );
+}
+
+export default memo(Projects);

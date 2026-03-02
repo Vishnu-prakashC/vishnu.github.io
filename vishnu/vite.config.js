@@ -8,4 +8,18 @@ export default defineConfig({
   resolve: {
     dedupe: ['react', 'react-dom'],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'framer-motion': ['framer-motion'],
+        },
+      },
+    },
+    cssCodeSplit: true,
+    sourcemap: false,
+    minify: 'esbuild',
+    target: 'esnext',
+  },
 })

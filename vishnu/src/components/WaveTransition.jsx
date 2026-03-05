@@ -89,8 +89,8 @@ function WaveTransition({ onBusyChange }, ref) {
             x2="100%"
             y2="100%"
           >
-            <stop offset="0%" stopColor="#6366F1" />
-            <stop offset="100%" stopColor="#8B5CF6" />
+            <stop offset="0%" stopColor="#6C7BFF" />
+            <stop offset="100%" stopColor="#FF4ECD" />
           </linearGradient>
         </defs>
         <path

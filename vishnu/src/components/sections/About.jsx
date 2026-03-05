@@ -20,18 +20,18 @@ function About() {
     >
       <div className="max-w-3xl text-center">
         <motion.h2
-          className="text-4xl md:text-5xl font-bold mb-6"
+          className="font-heading text-4xl font-bold mb-6 md:text-5xl"
           variants={scrollReveal}
         >
           About Me
         </motion.h2>
         <motion.p
-          className="text-white/60 text-lg leading-relaxed"
+          className="text-[var(--color-text)]/60 text-lg leading-relaxed"
           variants={scrollReveal}
         >
-          I am an engineering student passionate about building scalable web
-          applications, real-time systems, and immersive experiences using
-          modern frontend technologies.
+          I design and build immersive digital experiences — from scalable web
+          applications and real-time systems to 3D and interactive interfaces —
+          using modern frontend technologies.
         </motion.p>
       </div>
     </motion.section>

@@ -6,15 +6,15 @@ function About() {
   return (
     <motion.section
       id="about"
-      className="min-h-screen flex items-center justify-center px-6"
+      className="min-h-screen flex items-center justify-center px-6 py-20"
       initial="initial"
       whileInView="visible"
-      viewport={viewportOnce}
+      viewport={{ ...viewportOnce, amount: 0.25 }}
       variants={{
         initial: { opacity: 0 },
         visible: {
           opacity: 1,
-          transition: { staggerChildren: 0.1, delayChildren: 0.05 },
+          transition: { staggerChildren: 0.12, delayChildren: 0.12 },
         },
       }}
     >
@@ -25,6 +25,14 @@ function About() {
         >
           About Me
         </motion.h2>
+        <motion.div
+          className="mx-auto mb-8 h-px w-20 bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent"
+          variants={scrollReveal}
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={viewportOnce}
+          transition={{ duration: 0.6 }}
+        />
         <motion.p
           className="text-[var(--color-text)]/60 text-lg leading-relaxed"
           variants={scrollReveal}

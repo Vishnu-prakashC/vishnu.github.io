@@ -157,9 +157,16 @@ function Hero({ onTriggerWave, isWaveBusy }) {
         </motion.div>
       </div>
       <div className="hero-visual hidden items-center justify-center lg:flex">
-        <div
-          className="aspect-square w-full max-w-md rounded-2xl border border-white/10 bg-gradient-to-br from-[var(--color-primary)]/20 via-transparent to-[var(--color-accent)]/20"
+        <motion.div
+          className="aspect-square w-full max-w-md rounded-2xl border border-white/10 bg-[var(--color-bg)]"
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
           aria-hidden
+          style={{
+            background: "radial-gradient(ellipse 70% 70% at 50% 50%, var(--color-primary) 0%, transparent 50%), linear-gradient(135deg, rgba(108,123,255,0.08) 0%, transparent 40%, rgba(255,78,205,0.06) 100%)",
+            boxShadow: "inset 0 0 80px rgba(108,123,255,0.06)",
+          }}
         />
       </div>
     </section>

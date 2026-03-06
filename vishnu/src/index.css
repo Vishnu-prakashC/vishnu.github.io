@@ -63,3 +63,25 @@ html.lenis body {
 .hover-scale-on-hover:hover {
   will-change: transform;
 }
+
+/* Custom cursor click ripple */
+@keyframes cursor-ripple {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0.7; }
+  100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+}
+.cursor-ripple {
+  animation: cursor-ripple 0.5s ease-out forwards;
+  pointer-events: none;
+}
+
+/* Hide native cursor when custom cursor is active (buttons/links must not show default) */
+html.custom-cursor-active,
+html.custom-cursor-active body,
+html.custom-cursor-active *,
+html.custom-cursor-active *::before,
+html.custom-cursor-active *::after,
+html.custom-cursor-active input,
+html.custom-cursor-active button,
+html.custom-cursor-active a {
+  cursor: none !important;
+}

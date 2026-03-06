@@ -1,24 +1,47 @@
 import { memo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { motionTransition, navLinkUnderline } from "../../utils/motion";
+import { navLinkUnderline } from "../../utils/motion";
+import { motionEasingGentle } from "../../utils/motion";
+import { useScroll } from "../../contexts/ScrollContext";
+
+const navLinkTransition = {
+  duration: 0.35,
+  ease: motionEasingGentle.inOut,
+};
 
 const navLinks = [
-  { href: "/#about", label: "About" },
-  { href: "/#skills", label: "Skills" },
-  { href: "/#projects", label: "Projects" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/#about", id: "about", label: "About" },
+  { href: "/#skills", id: "skills", label: "Skills" },
+  { href: "/#projects", id: "projects", label: "Projects" },
+  { href: "/#contact", id: "contact", label: "Contact" },
 ];
 
-function NavLink({ href, label }) {
-  const isExternal = href.startsWith("http");
-  const Comp = isExternal ? "a" : Link;
-  const linkProps = isExternal ? { href } : { to: href };
+function NavLink({ href, id, label }) {
+  const { scrollToSection } = useScroll();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isActive = location.hash === `#${id}`;
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (location.pathname !== "/") {
+      navigate(href);
+      return;
+    }
+    scrollToSection(id, { duration: 1.6, offset: -100 });
+    window.history.replaceState(null, "", href);
+  };
+
   return (
     <li>
-      <Comp
-        {...linkProps}
-        className="relative py-2 text-[var(--color-text)]/90 hover:text-[var(--color-text)] focus:text-[var(--color-text)] focus:outline-none transition-colors duration-200"
+      <a
+        href={href}
+        onClick={handleClick}
+        className={`relative py-2 focus:outline-none transition-colors duration-300 focus:text-[var(--color-text)] ${
+          isActive ? "text-[var(--color-primary)]" : "text-[var(--color-text)]/90 hover:text-[var(--color-text)]"
+        }`}
+        aria-current={isActive ? "page" : undefined}
       >
         <span className="relative z-10">{label}</span>
         <motion.span
@@ -26,9 +49,10 @@ function NavLink({ href, label }) {
           variants={navLinkUnderline}
           initial="rest"
           whileHover="hover"
-          transition={{ duration: motionTransition.medium.duration, ease: motionTransition.medium.ease }}
+          animate={isActive ? "hover" : "rest"}
+          transition={navLinkTransition}
         />
-      </Comp>
+      </a>
     </li>
   );
 }
@@ -36,14 +60,15 @@ function NavLink({ href, label }) {
 function Navbar() {
   return (
     <motion.nav
-      className="flex justify-between items-center px-6 sm:px-10 py-6"
+      className="fixed left-0 right-0 top-0 z-50 flex justify-between items-center px-6 sm:px-10 py-6"
+      style={{ background: "transparent" }}
       initial="initial"
       animate="animate"
       variants={{
         initial: { opacity: 0 },
         animate: {
           opacity: 1,
-          transition: { staggerChildren: 0.06, delayChildren: 0.1 },
+          transition: { staggerChildren: 0.08, delayChildren: 0.15 },
         },
       }}
     >
@@ -55,7 +80,7 @@ function Navbar() {
       <ul className="flex items-center gap-6 sm:gap-8">
         {navLinks.map((link) => (
           <motion.li key={link.href} variants={{ initial: { opacity: 0, y: -6 }, animate: { opacity: 1, y: 0 } }}>
-            <NavLink href={link.href} label={link.label} />
+            <NavLink href={link.href} id={link.id} label={link.label} />
           </motion.li>
         ))}
       </ul>

@@ -35,22 +35,22 @@ export default function IntroLoader({ onFinish }) {
       });
       tlRef.current = tl;
 
-      // 0s — black screen, logo fade in
-      tl.fromTo(logo, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, TIMELINE.logoIn);
+      // 0s — black screen, logo fade in (gentle)
+      tl.fromTo(logo, { opacity: 0 }, { opacity: 1, duration: 0.55, ease: "sine.out" }, TIMELINE.logoIn);
 
-      // 0.5s — text slide in
+      // 0.5s — text slide in (gentle)
       tl.fromTo(
         text,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.45, ease: "sine.out" },
         TIMELINE.textSlide
       );
 
-      // 1.5s — background glow
-      tl.to(glow, { opacity: 1, scale: 1.2, duration: 1, ease: "power2.inOut" }, TIMELINE.backgroundGlow);
+      // 1.5s — background glow (smooth)
+      tl.to(glow, { opacity: 1, scale: 1.2, duration: 1, ease: "sine.inOut" }, TIMELINE.backgroundGlow);
 
-      // 2.5s — reveal site (fade out loader)
-      tl.to(loader, { opacity: 0, duration: 0.8, ease: "power2.inOut" }, TIMELINE.revealSite);
+      // 2.5s — reveal site (fade out loader, gentle)
+      tl.to(loader, { opacity: 0, duration: 0.7, ease: "sine.inOut" }, TIMELINE.revealSite);
     });
 
     return () => {

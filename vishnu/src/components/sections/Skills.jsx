@@ -1,6 +1,12 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
-import { scrollReveal, viewportOnce } from "../../utils/motion";
+import {
+  scrollRevealGentle,
+  scrollRevealScaleGentle,
+  viewportOnceSmooth,
+  motionTransitionGentle,
+  motionEasingGentle,
+} from "../../utils/motion";
 
 const SKILL_GROUPS = [
   {
@@ -45,10 +51,14 @@ function SkillCard({ name, accent, index }) {
   const style = accentStyles[accent];
   return (
     <motion.div
-      variants={scrollReveal}
-      transition={{ delay: index * 0.03 }}
+      variants={scrollRevealScaleGentle}
+      transition={{ delay: index * 0.03, ease: motionEasingGentle.out }}
       className={`group relative overflow-hidden rounded-2xl border bg-white/[0.02] px-6 py-5 transition-all duration-500 ${style.border} ${style.glow}`}
-      whileHover={{ y: -4, scale: 1.02 }}
+      whileHover={{
+        y: -4,
+        scale: 1.02,
+        transition: { duration: 0.4, ease: motionEasingGentle.inOut },
+      }}
     >
       <div className="flex items-center gap-4">
         <span
@@ -61,7 +71,7 @@ function SkillCard({ name, accent, index }) {
         </span>
       </div>
       <div
-        className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
           background: `radial-gradient(ellipse 80% 80% at 50% 100%, ${accent === "primary" ? "rgba(108,123,255,0.06)" : accent === "accent" ? "rgba(255,78,205,0.06)" : "rgba(0,240,255,0.06)"} 0%, transparent 70%)`,
         }}
@@ -77,51 +87,73 @@ function Skills() {
       className="relative min-h-screen flex flex-col items-center justify-center px-6 py-24"
       initial="initial"
       whileInView="visible"
-      viewport={{ ...viewportOnce, amount: 0.15 }}
+      viewport={viewportOnceSmooth}
       variants={{
         initial: { opacity: 0 },
         visible: {
           opacity: 1,
-          transition: { staggerChildren: 0.08, delayChildren: 0.15 },
+          transition: {
+            staggerChildren: motionTransitionGentle.staggerTight,
+            delayChildren: motionTransitionGentle.delayChildren,
+          },
         },
       }}
     >
       <motion.h2
         className="font-heading text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl mb-3"
-        variants={scrollReveal}
+        variants={scrollRevealGentle}
       >
         Skills & Tech
       </motion.h2>
       <motion.p
         className="text-[var(--color-text)]/50 mb-20 max-w-lg text-center text-base tracking-wide md:text-lg"
-        variants={scrollReveal}
+        variants={scrollRevealGentle}
       >
         Technologies I use to build immersive experiences
       </motion.p>
 
-      <div className="grid w-full max-w-5xl gap-12 md:gap-16">
+      <motion.div
+        className="grid w-full max-w-5xl gap-12 md:gap-16"
+        variants={{
+          initial: {},
+          visible: {
+            transition: {
+              staggerChildren: motionTransitionGentle.staggerTight,
+              delayChildren: motionTransitionGentle.delayChildren * 0.5,
+            },
+          },
+        }}
+      >
         {SKILL_GROUPS.map((group, gi) => (
           <motion.div
             key={group.label}
-            variants={scrollReveal}
+            variants={scrollRevealGentle}
             className="space-y-5"
           >
             <span className="inline-block font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-primary)]/70">
               {group.label}
             </span>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-5">
+            <motion.div
+              className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-5"
+              variants={{
+                initial: {},
+                visible: {
+                  transition: { staggerChildren: 0.04, delayChildren: 0.06 },
+                },
+              }}
+            >
               {group.skills.map((skill, si) => (
                 <SkillCard
                   key={skill}
                   name={skill}
                   accent={group.accent}
-                  index={gi * 10 + si}
+                  index={si}
                 />
               ))}
-            </div>
+            </motion.div>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
     </motion.section>
   );
 }

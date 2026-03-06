@@ -2,7 +2,7 @@ import { memo, useRef, useEffect, useCallback, useState } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { heroTitle, heroSubtitle, motionTransition } from "../../utils/motion";
+import { heroTitle, heroSubtitle } from "../../utils/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -49,18 +49,18 @@ function Hero({ onTriggerWave, isWaveBusy }) {
     };
   }, [onMouseMove, onMouseLeave]);
 
-  // Letter-by-letter headline animation
+  // Letter-by-letter headline animation — gentle, smooth
   useEffect(() => {
     const letters = lettersRef.current.filter(Boolean);
     if (!letters.length) return;
-    gsap.set(letters, { opacity: 0, y: 24 });
+    gsap.set(letters, { opacity: 0, y: 18 });
     gsap.to(letters, {
       opacity: 1,
       y: 0,
-      duration: 0.4,
-      stagger: 0.03,
-      delay: 0.25,
-      ease: "power2.out",
+      duration: 0.38,
+      stagger: 0.025,
+      delay: 0.22,
+      ease: "sine.out",
     });
   }, []);
 
@@ -80,8 +80,8 @@ function Hero({ onTriggerWave, isWaveBusy }) {
 
     tl.fromTo(
       content,
-      { opacity: 0.85, scale: 0.98 },
-      { opacity: 1, scale: 1, duration: 1 }
+      { opacity: 0.9, scale: 0.99 },
+      { opacity: 1, scale: 1, duration: 1.2, ease: "sine.out" }
     );
 
     return () => {
@@ -91,8 +91,8 @@ function Hero({ onTriggerWave, isWaveBusy }) {
 
   const handleClick = () => {
     if (isWaveBusy || !onTriggerWave) return;
-    gsap.to(buttonRef.current, { scale: 0.95, duration: 0.1 });
-    gsap.to(buttonRef.current, { scale: 1, duration: 0.15, delay: 0.05 });
+    gsap.to(buttonRef.current, { scale: 0.97, duration: 0.12, ease: "sine.out" });
+    gsap.to(buttonRef.current, { scale: 1, duration: 0.28, delay: 0.06, ease: "sine.out" });
     onTriggerWave();
   };
 
@@ -130,7 +130,7 @@ function Hero({ onTriggerWave, isWaveBusy }) {
           variants={heroSubtitle}
           initial="initial"
           animate="animate"
-          transition={{ ...motionTransition.medium, delay: 0.4 }}
+          transition={{ delay: 0.36, duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
         >
           I design and build immersive digital experiences using modern web
           technologies and 3D graphics.
@@ -139,7 +139,7 @@ function Hero({ onTriggerWave, isWaveBusy }) {
           className="mt-12"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.25 }}
+          transition={{ delay: 0.5, duration: 0.38, ease: [0.4, 0, 0.2, 1] }}
         >
           <button
             ref={buttonRef}
@@ -149,7 +149,7 @@ function Hero({ onTriggerWave, isWaveBusy }) {
             className="hover-scale-on-hover rounded-full bg-[var(--color-primary)] px-8 py-4 font-medium text-white transition-colors hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#050505] disabled:cursor-not-allowed disabled:opacity-70"
             style={{
               transform: `translate(${magnetic.x}px, ${magnetic.y}px)`,
-              transition: "transform 0.2s ease-out",
+              transition: "transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)",
             }}
           >
             View Projects
@@ -159,9 +159,9 @@ function Hero({ onTriggerWave, isWaveBusy }) {
       <div className="hero-visual hidden items-center justify-center lg:flex">
         <motion.div
           className="aspect-square w-full max-w-md rounded-2xl border border-white/10 bg-[var(--color-bg)]"
-          initial={{ opacity: 0, scale: 0.96 }}
+          initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 0.55, ease: [0.4, 0, 0.2, 1] }}
           aria-hidden
           style={{
             background: "radial-gradient(ellipse 70% 70% at 50% 50%, var(--color-primary) 0%, transparent 50%), linear-gradient(135deg, rgba(108,123,255,0.08) 0%, transparent 40%, rgba(255,78,205,0.06) 100%)",

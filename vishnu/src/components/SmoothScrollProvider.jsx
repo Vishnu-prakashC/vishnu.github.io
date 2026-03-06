@@ -1,12 +1,35 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import Lenis from "@studio-freight/lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollContext } from "../contexts/ScrollContext";
 
 // Register ScrollTrigger once
 gsap.registerPlugin(ScrollTrigger);
 
 const SmoothScrollProvider = ({ children }) => {
+  const lenisRef = useRef(null);
+
+  const scrollToSection = useCallback((id, options = {}) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const { offset = -80, duration = 1.5 } = options;
+    const easing = (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t));
+
+    if (lenisRef.current) {
+      // Lenis accepts selector string (e.g. "#skills") for reliable scroll-to-element
+      lenisRef.current.scrollTo(`#${id}`, {
+        offset,
+        duration,
+        easing,
+      });
+    } else {
+      // Fallback when Lenis isn't ready (e.g. before mount)
+      const y = el.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: y + offset, behavior: "smooth" });
+    }
+  }, []);
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -14,6 +37,7 @@ const SmoothScrollProvider = ({ children }) => {
       smooth: true,
       direction: "vertical",
     });
+    lenisRef.current = lenis;
 
     function raf(time) {
       lenis.raf(time);
@@ -47,12 +71,17 @@ const SmoothScrollProvider = ({ children }) => {
     return () => {
       lenis.off("scroll", ScrollTrigger.update);
       lenis.destroy();
+      lenisRef.current = null;
       ScrollTrigger.scrollerProxy(document.body, {});
       window.removeEventListener("resize", handleResize);
     };
   }, []);
 
-  return <>{children}</>;
+  return (
+    <ScrollContext.Provider value={{ scrollToSection }}>
+      {children}
+    </ScrollContext.Provider>
+  );
 };
 
 export default SmoothScrollProvider;

@@ -1,10 +1,20 @@
 import { memo, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { scrollReveal, hoverScaleSubtle, viewportOnce, motionTransition } from "../../utils/motion";
+import {
+  scrollRevealGentle,
+  scrollRevealScaleGentle,
+  hoverScaleSubtle,
+  viewportOnceSmooth,
+  motionTransitionGentle,
+  motionEasingGentle,
+} from "../../utils/motion";
 import { PROJECTS } from "../../data/projects";
 
-const cardTransition = { duration: motionTransition.medium.duration, ease: motionTransition.medium.ease };
+const cardTransition = {
+  duration: 0.38,
+  ease: motionEasingGentle.inOut,
+};
 
 function ProjectCard({ item }) {
   return (
@@ -39,19 +49,16 @@ function Projects() {
       initial: { opacity: 0 },
       visible: {
         opacity: 1,
-        transition: { staggerChildren: 0.1, delayChildren: 0.05 },
+        transition: {
+          staggerChildren: motionTransitionGentle.staggerNormal,
+          delayChildren: motionTransitionGentle.delayChildren,
+        },
       },
     }),
     []
   );
 
-  const itemVariants = useMemo(
-    () => ({
-      initial: scrollReveal.initial,
-      visible: scrollReveal.visible,
-    }),
-    []
-  );
+  const itemVariants = useMemo(() => scrollRevealGentle, []);
 
   return (
     <motion.section
@@ -59,7 +66,7 @@ function Projects() {
       className="min-h-screen px-6 sm:px-10 py-20"
       initial="initial"
       whileInView="visible"
-      viewport={viewportOnce}
+      viewport={viewportOnceSmooth}
       variants={sectionVariants}
     >
       <motion.h2
@@ -76,8 +83,15 @@ function Projects() {
       </motion.p>
 
       <div className="grid md:grid-cols-3 gap-8 sm:gap-10">
-        {PROJECTS.map((item) => (
-          <motion.div key={item.id} variants={itemVariants}>
+        {PROJECTS.map((item, i) => (
+          <motion.div
+            key={item.id}
+            variants={scrollRevealScaleGentle}
+            transition={{
+              delay: motionTransitionGentle.delayChildren + i * motionTransitionGentle.staggerTight,
+              ease: motionEasingGentle.out,
+            }}
+          >
             <ProjectCard item={item} />
           </motion.div>
         ))}

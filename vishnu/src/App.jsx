@@ -3,7 +3,8 @@ import Navbar from "./components/layout/Navbar";
 import WaveTransition from "./components/WaveTransition";
 import IntroLoader from "./components/ui/IntroLoader";
 import ScrollProgress from "./components/ui/ScrollProgress";
-import CustomCursor from "./components/cursor/CustomCursor";
+import SectionIndicators from "./components/ui/SectionIndicators";
+import FloatingShapes from "./components/ui/FloatingShapes";
 import ThemeFloating from "./components/ui/ThemeFloating";
 import { Routes, Route } from "react-router-dom";
 
@@ -20,8 +21,9 @@ function App() {
       <IntroLoader onFinish={() => setIntroDone(true)} />
       {introDone && (
         <>
-          <CustomCursor />
+          <FloatingShapes />
           <ScrollProgress />
+          <SectionIndicators />
           <ThemeFloating />
           <WaveTransition ref={waveRef} onBusyChange={setIsWaveBusy} />
           <Navbar />

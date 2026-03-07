@@ -74,7 +74,13 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* Hide native cursor when custom cursor is active (buttons/links must not show default) */
+/* Animated gradient border (project cards, etc.) */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Hide native cursor when custom cursor is active */
 html.custom-cursor-active,
 html.custom-cursor-active body,
 html.custom-cursor-active *,

@@ -17,13 +17,24 @@ function ScrollProgress() {
 
   return (
     <div
-      className="fixed left-0 top-0 z-[100] h-[2px] w-full origin-left bg-[var(--color-primary)]/20"
+      className="fixed left-0 top-0 z-[100] h-[3px] w-full origin-left overflow-hidden"
       aria-hidden
     >
+      <div
+        className="h-full w-full origin-left opacity-30"
+        style={{
+          background: "linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 50%, var(--color-accent-cyan) 100%)",
+        }}
+      />
       <motion.div
-        className="h-full origin-left bg-[var(--color-primary)]"
-        style={{ scaleX: progress }}
-        transition={{ type: "spring", stiffness: 100, damping: 30 }}
+        className="absolute inset-y-0 left-0 z-10 origin-left rounded-r-full"
+        animate={{ scaleX: progress }}
+        transition={{ type: "spring", stiffness: 100, damping: 28 }}
+        style={{
+          width: "100%",
+          background: "linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 70%)",
+          boxShadow: "0 0 20px var(--color-primary)",
+        }}
       />
     </div>
   );

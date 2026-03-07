@@ -6,6 +6,8 @@ const CURSOR_STATES = {
   default: "default",
   hover: "hover",
   viewProject: "view-project",
+  projectPreview: "project-preview",
+  drag: "drag",
 };
 
 const CLASS_CUSTOM_CURSOR_ACTIVE = "custom-cursor-active";
@@ -73,6 +75,18 @@ function CustomCursor() {
         setLabel(target.getAttribute("data-cursor-label") || "View");
         return;
       }
+      const projectPreview = e.target.closest("[data-cursor-project-preview]");
+      if (projectPreview) {
+        setState(CURSOR_STATES.projectPreview);
+        setLabel("");
+        return;
+      }
+      const dragTarget = e.target.closest("[data-cursor-drag]");
+      if (dragTarget) {
+        setState(CURSOR_STATES.drag);
+        setLabel("");
+        return;
+      }
       const hoverTarget = e.target.closest("[data-cursor-hover]");
       if (hoverTarget) {
         setState(CURSOR_STATES.hover);
@@ -87,7 +101,16 @@ function CustomCursor() {
     return () => document.body.removeEventListener("mouseover", handleOver);
   }, []);
 
-  const targetScale = state === CURSOR_STATES.viewProject ? 1.65 : state === CURSOR_STATES.hover ? 1.3 : 1;
+  const targetScale =
+    state === CURSOR_STATES.viewProject
+      ? 1.65
+      : state === CURSOR_STATES.projectPreview
+        ? 1.45
+        : state === CURSOR_STATES.drag
+          ? 0.85
+          : state === CURSOR_STATES.hover
+            ? 1.3
+            : 1;
 
   useEffect(() => {
     if (!visible || !containerRef.current) return;

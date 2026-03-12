@@ -80,6 +80,29 @@ html.lenis body {
   50% { background-position: 100% 50%; }
 }
 
+/* Hero profile image — keep original quality, no blur from transforms */
+.profile-card {
+  border-radius: 28px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Prevent subpixel blur from container */
+  isolation: isolate;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  /* Sharper downscaling in WebKit; fallback to auto for photos */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: auto;
+  -ms-interpolation-mode: bicubic;
+}
+
 /* Hide native cursor when custom cursor is active */
 html.custom-cursor-active,
 html.custom-cursor-active body,

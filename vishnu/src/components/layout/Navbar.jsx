@@ -34,26 +34,24 @@ function NavLink({ href, id, label }) {
   };
 
   return (
-    <li>
-      <a
-        href={href}
-        onClick={handleClick}
-        className={`relative py-2 focus:outline-none transition-colors duration-300 focus:text-[var(--color-text)] ${
-          isActive ? "text-[var(--color-primary)]" : "text-[var(--color-text)]/90 hover:text-[var(--color-text)]"
-        }`}
-        aria-current={isActive ? "page" : undefined}
-      >
-        <span className="relative z-10">{label}</span>
-        <motion.span
-          className="absolute bottom-0 left-0 right-0 h-px origin-left bg-[var(--color-primary)]"
-          variants={navLinkUnderline}
-          initial="rest"
-          whileHover="hover"
-          animate={isActive ? "hover" : "rest"}
-          transition={navLinkTransition}
-        />
-      </a>
-    </li>
+    <a
+      href={href}
+      onClick={handleClick}
+      className={`relative py-2 focus:outline-none transition-colors duration-300 focus:text-[var(--color-text)] ${
+        isActive ? "text-[var(--color-primary)]" : "text-[var(--color-text)]/90 hover:text-[var(--color-text)]"
+      }`}
+      aria-current={isActive ? "page" : undefined}
+    >
+      <span className="relative z-10">{label}</span>
+      <motion.span
+        className="absolute bottom-0 left-0 right-0 h-px origin-left bg-[var(--color-primary)]"
+        variants={navLinkUnderline}
+        initial="rest"
+        whileHover="hover"
+        animate={isActive ? "hover" : "rest"}
+        transition={navLinkTransition}
+      />
+    </a>
   );
 }
 

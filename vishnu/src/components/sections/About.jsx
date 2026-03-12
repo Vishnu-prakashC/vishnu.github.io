@@ -24,7 +24,7 @@ function About() {
   return (
     <motion.section
       id="about"
-      className="min-h-screen flex items-center justify-center px-6 py-20"
+      className="min-h-screen flex flex-col items-center justify-center px-6 py-20"
       initial="initial"
       whileInView="visible"
       viewport={viewportOnceSmooth}

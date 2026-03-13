@@ -103,6 +103,19 @@ html.lenis body {
   -ms-interpolation-mode: bicubic;
 }
 
+/* Certification vault — canvas fills container without overflow */
+.certification-vault-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+/* Certification preview card — will-change only on hover for performance */
+.certification-preview-card:hover {
+  will-change: transform;
+}
+
 /* Hide native cursor when custom cursor is active */
 html.custom-cursor-active,
 html.custom-cursor-active body,

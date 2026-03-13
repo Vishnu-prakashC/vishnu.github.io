@@ -9,6 +9,7 @@ import { useScroll } from "../contexts/ScrollContext";
 
 const About = lazy(() => import("../components/sections/About"));
 const Skills = lazy(() => import("../components/sections/Skills"));
+const Certifications = lazy(() => import("../components/sections/Certifications"));
 const Projects = lazy(() => import("../components/sections/Projects"));
 const Contact = lazy(() => import("../components/sections/Contact"));
 
@@ -20,7 +21,7 @@ const pageVariants = {
 
 const pageTransition = motionTransition.page;
 
-const SECTION_IDS = ["about", "skills", "projects", "contact"];
+const SECTION_IDS = ["about", "skills", "certifications", "projects", "contact"];
 
 function HomePage({ triggerWaveRef, isWaveBusy }) {
   const transition = useMemo(() => pageTransition, []);
@@ -61,6 +62,7 @@ function HomePage({ triggerWaveRef, isWaveBusy }) {
       <Suspense fallback={<section className="min-h-[50vh]" aria-hidden />}>
         <About />
         <Skills />
+        <Certifications />
         <Projects />
         <Contact />
       </Suspense>

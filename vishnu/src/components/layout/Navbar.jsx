@@ -13,6 +13,7 @@ const navLinkTransition = {
 const navLinks = [
   { href: "/#about", id: "about", label: "About" },
   { href: "/#skills", id: "skills", label: "Skills" },
+  { href: "/#certifications", id: "certifications", label: "Certifications" },
   { href: "/#projects", id: "projects", label: "Projects" },
   { href: "/#contact", id: "contact", label: "Contact" },
 ];

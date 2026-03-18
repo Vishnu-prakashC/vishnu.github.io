@@ -6,6 +6,7 @@ import ScrollProgress from "./components/ui/ScrollProgress";
 import SectionIndicators from "./components/ui/SectionIndicators";
 import FloatingShapes from "./components/ui/FloatingShapes";
 import ThemeFloating from "./components/ui/ThemeFloating";
+import ScrollToTopButton from "./components/ui/ScrollToTopButton";
 import { Routes, Route } from "react-router-dom";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -25,6 +26,7 @@ function App() {
           <ScrollProgress />
           <SectionIndicators />
           <ThemeFloating />
+          <ScrollToTopButton waveRef={waveRef} />
           <WaveTransition ref={waveRef} onBusyChange={setIsWaveBusy} />
           <Navbar />
           <Suspense fallback={<section className="min-h-screen" aria-hidden />}>

@@ -14,9 +14,15 @@ function WaveTransition({ onBusyChange }, ref) {
   const pathRef = useRef(null);
   const timelineRef = useRef(null);
 
-  const triggerWave = useCallback(() => {
+  const triggerWave = useCallback((options = {}) => {
     const path = pathRef.current;
-    if (!path || timelineRef.current?.isActive()) return;
+    if (!path || timelineRef.current?.isActive()) return false;
+
+    const { onCover, onComplete: onCompleteOption } = options;
+    const onCoverAction =
+      typeof onCover === "function"
+        ? onCover
+        : () => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
 
     onBusyChange?.(true);
     document.body.style.overflow = "hidden";
@@ -26,6 +32,7 @@ function WaveTransition({ onBusyChange }, ref) {
         document.body.style.overflow = "";
         onBusyChange?.(false);
         timelineRef.current = null;
+        onCompleteOption?.();
       },
     });
 
@@ -43,7 +50,7 @@ function WaveTransition({ onBusyChange }, ref) {
         ease: EASE,
       })
       .add(() => {
-        document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+        onCoverAction();
       })
       .to(
         path,
@@ -59,6 +66,8 @@ function WaveTransition({ onBusyChange }, ref) {
         duration: DURATION * 0.6,
         ease: EASE,
       });
+
+    return true;
   }, [onBusyChange]);
 
   useImperativeHandle(ref, () => ({ triggerWave }), [triggerWave]);

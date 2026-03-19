@@ -17,7 +17,7 @@ function ScrollProgress() {
 
   return (
     <div
-      className="fixed left-0 top-0 z-[100] h-[3px] w-full origin-left overflow-hidden"
+      className="fixed left-0 top-0 z-[9999] h-[3px] w-full origin-left overflow-hidden pointer-events-none"
       aria-hidden
     >
       <div

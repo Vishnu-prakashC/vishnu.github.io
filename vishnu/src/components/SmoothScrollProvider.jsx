@@ -30,6 +30,16 @@ const SmoothScrollProvider = ({ children }) => {
     }
   }, []);
 
+  const scrollToTop = useCallback(() => {
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    }
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -78,7 +88,7 @@ const SmoothScrollProvider = ({ children }) => {
   }, []);
 
   return (
-    <ScrollContext.Provider value={{ scrollToSection }}>
+    <ScrollContext.Provider value={{ scrollToSection, scrollToTop }}>
       {children}
     </ScrollContext.Provider>
   );

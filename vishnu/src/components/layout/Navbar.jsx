@@ -13,7 +13,7 @@ const navLinks = [
 ];
 
 const NavLink = memo(forwardRef(function NavLink({ href, id, label, onNavClick, activeId }, ref) {
-  const { scrollToSection } = useScroll();
+  const { scrollToSection, scrollToTop } = useScroll();
   const navigate = useNavigate();
   const location = useLocation();
   const isActive = activeId === id;
@@ -22,11 +22,12 @@ const NavLink = memo(forwardRef(function NavLink({ href, id, label, onNavClick, 
     e.preventDefault();
     onNavClick?.();
     if (location.pathname !== "/") {
-      navigate(href);
+      scrollToTop();
+      navigate({ pathname: "/", hash: id });
       return;
     }
     scrollToSection(id, { duration: 1.6, offset: -100 });
-    navigate(href);
+    navigate({ pathname: "/", hash: id });
   };
 
   return (
@@ -48,7 +49,7 @@ const NavLink = memo(forwardRef(function NavLink({ href, id, label, onNavClick, 
 function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { scrollToSection } = useScroll();
+  const { scrollToSection, scrollToTop } = useScroll();
   const [hasNavigated, setHasNavigated] = useState(false);
   const [activeId, setActiveId] = useState(navLinks[0].id);
   const underlineRef = useRef(null);
@@ -66,6 +67,9 @@ function Navbar() {
 
   useEffect(() => {
     if (location.pathname !== "/" || !location.hash) return;
+    const hashId = (location.hash.slice(1) || "").toLowerCase();
+    const isNavSection = navLinks.some((l) => l.id === hashId);
+    if (isNavSection) return;
     const t = setTimeout(() => {
       const scrollY = window.scrollY ?? document.documentElement.scrollTop;
       if (scrollY < 150) {
@@ -118,9 +122,12 @@ function Navbar() {
         }
         if (viewportRef < top) next = sectionIds[i];
       }
-      setActiveId(next);
+      const desiredHash = `#${next}`;
+      if (window.location.hash !== desiredHash) {
+        window.history.replaceState(null, "", `${pathname}${desiredHash}`);
+      }
+      setActiveId((prev) => (prev === next ? prev : next));
       setHasNavigated(true);
-      window.history.replaceState(null, "", `${pathname}#${next}`);
     };
 
     const onScroll = () => {
@@ -208,13 +215,23 @@ function Navbar() {
     if (e.key === "ArrowLeft" && i > 0) {
       e.preventDefault();
       const prev = navLinks[i - 1];
-      scrollToSection(prev.id, { duration: 1.2, offset: -100 });
-      navigate(prev.href);
+      if (location.pathname !== "/") {
+        scrollToTop();
+        navigate({ pathname: "/", hash: prev.id });
+      } else {
+        scrollToSection(prev.id, { duration: 1.2, offset: -100 });
+        navigate({ pathname: "/", hash: prev.id });
+      }
     } else if (e.key === "ArrowRight" && i < navLinks.length - 1) {
       e.preventDefault();
       const next = navLinks[i + 1];
-      scrollToSection(next.id, { duration: 1.2, offset: -100 });
-      navigate(next.href);
+      if (location.pathname !== "/") {
+        scrollToTop();
+        navigate({ pathname: "/", hash: next.id });
+      } else {
+        scrollToSection(next.id, { duration: 1.2, offset: -100 });
+        navigate({ pathname: "/", hash: next.id });
+      }
     }
   };
 

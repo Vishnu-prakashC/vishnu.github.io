@@ -1,8 +1,9 @@
-import { memo } from "react";
+import { memo, useEffect, useLayoutEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { getProjectBySlug, PROJECTS } from "../data/projects";
 import { scrollReveal, viewportOnce } from "../utils/motion";
+import { useScroll } from "../contexts/ScrollContext";
 
 function CaseStudyContent({ project }) {
   if (!project) return null;
@@ -152,7 +153,30 @@ function CaseStudyContent({ project }) {
 function ProjectCaseStudy() {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { scrollToTop } = useScroll();
   const project = getProjectBySlug(slug);
+
+  useLayoutEffect(() => {
+    scrollToTop();
+  }, [slug, scrollToTop]);
+
+  useEffect(() => {
+    scrollToTop();
+    let raf1 = 0;
+    let raf2 = 0;
+    raf1 = requestAnimationFrame(() => {
+      scrollToTop();
+      raf2 = requestAnimationFrame(() => {
+        scrollToTop();
+      });
+    });
+    const timeouts = [0, 50, 150, 350, 600].map((ms) => setTimeout(scrollToTop, ms));
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      timeouts.forEach(clearTimeout);
+    };
+  }, [slug, scrollToTop]);
 
   if (!project) {
     navigate("/", { replace: true });

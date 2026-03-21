@@ -10,6 +10,8 @@ import {
 } from "../../utils/motion";
 import { PROJECTS } from "../../data/projects";
 
+const MotionLink = motion.create(Link);
+
 const TILT_MAX = 8;
 const TILT_PERSPECTIVE = 1200;
 
@@ -40,8 +42,10 @@ function ProjectCard({ item }) {
   }, []);
 
   return (
-    <motion.div
+    <MotionLink
       ref={cardRef}
+      to={`/project/${item.slug}`}
+      aria-label={`View ${item.title}`}
       data-cursor-label="View"
       data-cursor-hover
       data-cursor-project-preview
@@ -88,7 +92,6 @@ function ProjectCard({ item }) {
             : "none",
         }}
       >
-        <Link to={`/project/${item.slug}`} className="absolute inset-0 z-10" aria-label={`View ${item.title}`} />
         <div
           className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           style={{
@@ -100,7 +103,7 @@ function ProjectCard({ item }) {
           <p className="text-[var(--color-text)]/60">{item.description}</p>
         </div>
       </motion.div>
-    </motion.div>
+    </MotionLink>
   );
 }
 

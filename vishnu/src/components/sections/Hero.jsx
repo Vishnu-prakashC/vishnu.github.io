@@ -164,7 +164,7 @@ function Hero({ onTriggerWave, isWaveBusy }) {
             className="profile-image object-center"
             loading="eager"
             decoding="async"
-            fetchPriority="high"
+            fetchpriority="high"
           />
         </motion.div>
       </div>

@@ -65,7 +65,7 @@ function SectionIndicators() {
       if (el) scrollToSection("hero", { duration: 1.2, offset: 0 });
       return;
     }
-    scrollToSection(id, { duration: 1.2, offset: -100 });
+    scrollToSection(id, { duration: 1.2 });
   };
 
   if (location.pathname !== "/") return null;

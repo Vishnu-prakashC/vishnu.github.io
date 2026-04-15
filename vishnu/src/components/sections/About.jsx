@@ -30,7 +30,7 @@ function About() {
       viewport={viewportOnceSmooth}
       variants={sectionVariants}
     >
-      <div className="max-w-3xl text-center">
+      <div className="section-content max-w-3xl text-center">
         <motion.h2
           className="font-heading text-4xl font-bold mb-6 md:text-5xl"
           variants={itemVariants}
@@ -48,9 +48,13 @@ function About() {
           className="text-[var(--color-text)]/60 text-lg leading-relaxed"
           variants={itemVariants}
         >
-          I design and build immersive digital experiences — from scalable web
-          applications and real-time systems to 3D and interactive interfaces —
-          using modern frontend technologies.
+          I am an Information Technology student at Kongu Engineering College, specializing in the intersection of Robust Development and User-Centric Design. My goal is to build secure, scalable applications that solve real-world problems through a combination of technical logic and visual precision.
+
+Development: I leverage Java to architect efficient, backend-driven solutions, focusing on clean structure and data integrity.
+
+Design: Using Figma, I translate complex IT requirements into high-fidelity, interactive prototypes that prioritize the user journey.
+
+The IT Advantage: My background in Information Technology allows me to look beyond just the code; I consider security, networking, and system performance to ensure every project is enterprise-ready.
         </motion.p>
       </div>
     </motion.section>

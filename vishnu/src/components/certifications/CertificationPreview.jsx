@@ -32,23 +32,24 @@ function CertificationPreview() {
       viewport={viewportOnceSmooth}
       variants={sectionVariants}
     >
-      <motion.h2
-        className="font-heading text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl mb-3"
-        variants={scrollRevealGentle}
-      >
-        Certifications
-      </motion.h2>
-      <motion.p
-        className="text-[var(--color-text)]/50 mb-16 max-w-lg text-center text-base tracking-wide md:text-lg"
-        variants={scrollRevealGentle}
-      >
-        Verified credentials and professional certifications
-      </motion.p>
+      <div className="section-content flex w-full max-w-xl flex-col items-center">
+        <motion.h2
+          className="font-heading text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl mb-3"
+          variants={scrollRevealGentle}
+        >
+          Certifications
+        </motion.h2>
+        <motion.p
+          className="text-[var(--color-text)]/50 mb-16 max-w-lg text-center text-base tracking-wide md:text-lg"
+          variants={scrollRevealGentle}
+        >
+          Verified credentials and professional certifications
+        </motion.p>
 
-      <motion.div
-        className="w-full max-w-xl"
-        variants={scrollRevealGentle}
-      >
+        <motion.div
+          className="w-full max-w-xl"
+          variants={scrollRevealGentle}
+        >
         {/* Card: no movement / swipe, only subtle border + shadow change */}
         <div
           className="certification-preview-card relative w-full rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl transition-[border-color,box-shadow] duration-300 hover:border-white/20 hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.5)] focus-within:ring-2 focus-within:ring-[var(--color-primary)] focus-within:ring-offset-2 focus-within:ring-offset-[var(--color-bg)]"
@@ -134,7 +135,8 @@ function CertificationPreview() {
             </div>
           </div>
         </div>
-      </motion.div>
+        </motion.div>
+      </div>
 
       {/* Full certificate image overlay with Close button */}
       <AnimatePresence>

@@ -41,7 +41,7 @@ function HomePage({ triggerWaveRef, isWaveBusy }) {
     if (!isLandingOnHome && !isInitialLoadWithHash) return;
     if (isInitialLoadWithHash) firstRunWithHomeHashRef.current = false;
     const t = setTimeout(() => {
-      scrollToSection(id, { duration: 1.2, offset: -100 });
+      scrollToSection(id, { duration: 1.2 });
     }, 300);
     return () => clearTimeout(t);
   }, [location.pathname, location.hash, scrollToSection]);

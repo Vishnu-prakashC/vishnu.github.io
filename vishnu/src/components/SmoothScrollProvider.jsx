@@ -11,23 +11,48 @@ const SmoothScrollProvider = ({ children }) => {
   const lenisRef = useRef(null);
 
   const scrollToSection = useCallback((id, options = {}) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const { offset = -80, duration = 1.5 } = options;
-    const easing = (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t));
+    const section = document.getElementById(id);
+    if (!section) return;
 
-    if (lenisRef.current) {
-      // Lenis accepts selector string (e.g. "#skills") for reliable scroll-to-element
-      lenisRef.current.scrollTo(`#${id}`, {
-        offset,
-        duration,
-        easing,
-      });
+    const { offset = 0 } = options;
+    const content = section.querySelector(".section-content") || section;
+    const rect = content.getBoundingClientRect();
+    const absoluteTop = window.scrollY + rect.top;
+    const viewportHeight = window.innerHeight;
+    const contentHeight = rect.height;
+
+    const ratio = Math.min(contentHeight / viewportHeight, 1);
+    const isTallContent = contentHeight >= viewportHeight * 0.9;
+    const navHeight =
+      document.querySelector('nav[aria-label="Main"]')?.getBoundingClientRect().height ?? 72;
+
+    // Fine-tune specific sections without breaking reusable behavior.
+    const sectionAdjustments = {
+      skills: -22, // Skills was landing too high; push content slightly down.
+      projects: 34, // Projects should land a little higher (like your reference).
+    };
+
+    let targetY;
+    if (isTallContent) {
+      // For tall content blocks, top-anchor below navbar is visually more stable than centering.
+      targetY = absoluteTop - (navHeight + 18);
     } else {
-      // Fallback when Lenis isn't ready (e.g. before mount)
-      const y = el.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({ top: y + offset, behavior: "smooth" });
+      // For shorter blocks, center with a dynamic upward bias.
+      const centeredY = absoluteTop - (viewportHeight - contentHeight) / 2;
+      const dynamicBias = 44 - ratio * 24;
+      targetY = centeredY - dynamicBias;
     }
+
+    targetY = targetY + (sectionAdjustments[id] ?? 0) + offset;
+
+    const maxScroll =
+      document.documentElement.scrollHeight - viewportHeight;
+    const clampedTarget = Math.max(0, Math.min(targetY, maxScroll));
+
+    window.scrollTo({
+      top: clampedTarget,
+      behavior: "smooth",
+    });
   }, []);
 
   const scrollToTop = useCallback(() => {

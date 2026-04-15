@@ -133,32 +133,34 @@ function Projects() {
       viewport={viewportOnceSmooth}
       variants={sectionVariants}
     >
-      <motion.h2
-        className="font-heading text-4xl font-bold mb-4 md:text-5xl lg:text-6xl"
-        variants={itemVariants}
-      >
-        Featured Projects
-      </motion.h2>
-      <motion.p
-        className="text-[var(--color-text)]/50 mb-16 max-w-xl text-lg"
-        variants={itemVariants}
-      >
-        Selected work — from web apps to interactive experiences
-      </motion.p>
+      <div className="section-content mx-auto w-full max-w-6xl">
+        <motion.h2
+          className="font-heading text-4xl font-bold mb-4 md:text-5xl lg:text-6xl"
+          variants={itemVariants}
+        >
+          Featured Projects
+        </motion.h2>
+        <motion.p
+          className="text-[var(--color-text)]/50 mb-16 max-w-xl text-lg"
+          variants={itemVariants}
+        >
+          Selected work — from web apps to interactive experiences
+        </motion.p>
 
-      <div className="grid md:grid-cols-3 gap-8 sm:gap-10">
-        {PROJECTS.map((item, i) => (
-          <motion.div
-            key={item.id}
-            variants={scrollRevealScaleGentle}
-            transition={{
-              delay: motionTransitionGentle.delayChildren + i * motionTransitionGentle.staggerTight,
-              ease: motionEasingGentle.out,
-            }}
-          >
-            <ProjectCard item={item} />
-          </motion.div>
-        ))}
+        <div className="grid md:grid-cols-3 gap-8 sm:gap-10">
+          {PROJECTS.map((item, i) => (
+            <motion.div
+              key={item.id}
+              variants={scrollRevealScaleGentle}
+              transition={{
+                delay: motionTransitionGentle.delayChildren + i * motionTransitionGentle.staggerTight,
+                ease: motionEasingGentle.out,
+              }}
+            >
+              <ProjectCard item={item} />
+            </motion.div>
+          ))}
+        </div>
       </div>
     </motion.section>
   );

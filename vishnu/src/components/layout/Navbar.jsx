@@ -26,7 +26,7 @@ const NavLink = memo(forwardRef(function NavLink({ href, id, label, onNavClick, 
       navigate({ pathname: "/", hash: id });
       return;
     }
-    scrollToSection(id, { duration: 1.6, offset: -100 });
+    scrollToSection(id, { duration: 1.6 });
     navigate({ pathname: "/", hash: id });
   };
 
@@ -219,7 +219,7 @@ function Navbar() {
         scrollToTop();
         navigate({ pathname: "/", hash: prev.id });
       } else {
-        scrollToSection(prev.id, { duration: 1.2, offset: -100 });
+        scrollToSection(prev.id, { duration: 1.2 });
         navigate({ pathname: "/", hash: prev.id });
       }
     } else if (e.key === "ArrowRight" && i < navLinks.length - 1) {
@@ -229,7 +229,7 @@ function Navbar() {
         scrollToTop();
         navigate({ pathname: "/", hash: next.id });
       } else {
-        scrollToSection(next.id, { duration: 1.2, offset: -100 });
+        scrollToSection(next.id, { duration: 1.2 });
         navigate({ pathname: "/", hash: next.id });
       }
     }

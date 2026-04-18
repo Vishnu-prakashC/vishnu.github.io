@@ -12,6 +12,8 @@ const navLinks = [
   { href: "/#contact", id: "contact", label: "Contact" },
 ];
 
+const HOME_IDS = ["home", "hero"];
+
 const NavLink = memo(forwardRef(function NavLink({ href, id, label, onNavClick, activeId }, ref) {
   const { scrollToSection, scrollToTop } = useScroll();
   const navigate = useNavigate();
@@ -59,6 +61,28 @@ function Navbar() {
   const isFirstMount = useRef(true);
   const tickingRef = useRef(false);
   const handleNavClick = useCallback(() => setHasNavigated(true), []);
+
+  const handleBrandClick = useCallback(
+    (e) => {
+      e.preventDefault();
+      setActiveId("");
+      setHasNavigated(false);
+
+      const heroId = HOME_IDS.find((id) => document.getElementById(id));
+
+      if (location.pathname !== "/") {
+        navigate({ pathname: "/", hash: heroId || "home" });
+        return;
+      }
+
+      if (heroId) {
+        scrollToSection(heroId, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    },
+    [location.pathname, navigate, scrollToSection]
+  );
 
   useEffect(() => {
     const hashId = (location.hash.slice(1) || "").toLowerCase();
@@ -255,7 +279,11 @@ function Navbar() {
     >
       <div className="relative z-0 max-w-6xl mx-auto flex justify-between items-center px-6 sm:px-10 pt-4 pb-4 w-full">
         <motion.div variants={{ initial: { opacity: 0, y: -6 }, animate: { opacity: 1, y: 0 } }}>
-          <Link to="/" className="font-heading text-xl font-bold text-white focus:outline-none hover:opacity-90 transition-opacity focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f0f0f]">
+          <Link
+            to="/"
+            onClick={handleBrandClick}
+            className="font-heading text-xl font-bold text-white focus:outline-none hover:opacity-90 transition-opacity focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f0f0f]"
+          >
             Vichu
           </Link>
         </motion.div>

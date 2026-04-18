@@ -21,7 +21,7 @@ const pageVariants = {
 
 const pageTransition = motionTransition.page;
 
-const SECTION_IDS = ["about", "skills", "certifications", "projects", "contact"];
+const SECTION_IDS = ["home", "hero", "about", "skills", "certifications", "projects", "contact"];
 
 function HomePage({ triggerWaveRef, isWaveBusy }) {
   const transition = useMemo(() => pageTransition, []);
